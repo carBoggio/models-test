@@ -186,7 +186,7 @@ class TestTimeDifferentModels:
 # Función main para ejecutar el test
 def main():
     # Especifica aquí la ruta a tu carpeta de imágenes
-    image_folder = "./caras_buena_definicion_taylor"  # Cambia esto por tu ruta
+    image_folder = "caras_buena_definicion_taylor"  # Cambia esto por tu ruta
     
     # Crear el tester
     tester = TestTimeDifferentModels(image_folder)

@@ -1,9 +1,7 @@
 from reconocimiento import Reconocimiento
 
-import numpy as np
-import insightface
 
-  
+import insightface
 
 class ArcFaceReconocimiento(Reconocimiento):
     """Implementación usando ArcFace con insightface"""
