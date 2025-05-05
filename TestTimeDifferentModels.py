@@ -59,6 +59,7 @@ class TestTimeDifferentModels:
         if faces:
             for i, face in enumerate(faces):
                 print(f"\n  --- Cara {i+1} ---")
+                print(f"  Dimensiones: {face.shape}")
                 
                 # Generar embedding con ArcFace (ahora devuelve tupla)
                 arcface_embedding, arcface_inference_time = self.arcface.generateFaceEmbedding(face)
@@ -68,6 +69,11 @@ class TestTimeDifferentModels:
                     'face_id': i,
                     'inference_time': arcface_inference_time
                 })
+                
+                if arcface_embedding is not None:
+                    print(f"  ArcFace - Tiempo de inferencia: {arcface_inference_time:.4f} segundos")
+                else:
+                    print(f"  ArcFace - ERROR: No se generó embedding")
                 
                 # Generar embedding con FaceNet
                 start_time = time.time()
@@ -79,6 +85,11 @@ class TestTimeDifferentModels:
                     'face_id': i,
                     'time': facenet_time
                 })
+                
+                if facenet_embedding is not None:
+                    print(f"  FaceNet - Tiempo: {facenet_time:.4f} segundos")
+                else:
+                    print(f"  FaceNet - ERROR: No se generó embedding")
                 
                 # Guardar embeddings
                 image_key = f"{os.path.basename(image_path)}_face_{i}"
@@ -135,17 +146,28 @@ class TestTimeDifferentModels:
         
         # Resumen de ArcFace
         if self.timing_results['arcface']:
-            avg_arcface = sum(r['inference_time'] for r in self.timing_results['arcface']) / len(self.timing_results['arcface'])
-            print(f"\nArcFace:")
-            print(f"  Tiempo promedio de inferencia: {avg_arcface:.4f} segundos")
-            print(f"  Total de embeddings generados: {len(self.embeddings_map['arcface'])}")
+            # Filtrar solo los exitosos
+            arcface_success = [r for r in self.timing_results['arcface'] if r['inference_time'] > 0 and r['inference_time'] < 1.0]
+            if arcface_success:
+                avg_arcface = sum(r['inference_time'] for r in arcface_success) / len(arcface_success)
+                print(f"\nArcFace:")
+                print(f"  Tiempo promedio de inferencia: {avg_arcface:.4f} segundos")
+                print(f"  Éxitos: {len(arcface_success)} de {len(self.timing_results['arcface'])}")
+                print(f"  Total de embeddings generados: {len(self.embeddings_map['arcface'])}")
+            else:
+                print(f"\nArcFace: No se generaron embeddings exitosos")
         
         # Resumen de FaceNet
         if self.timing_results['facenet']:
-            avg_facenet = sum(r['time'] for r in self.timing_results['facenet']) / len(self.timing_results['facenet'])
-            print(f"\nFaceNet:")
-            print(f"  Tiempo promedio por cara: {avg_facenet:.4f} segundos")
-            print(f"  Total de embeddings generados: {len(self.embeddings_map['facenet'])}")
+            facenet_success = [r for r in self.timing_results['facenet'] if r['time'] > 0]
+            if facenet_success:
+                avg_facenet = sum(r['time'] for r in facenet_success) / len(facenet_success)
+                print(f"\nFaceNet:")
+                print(f"  Tiempo promedio por cara: {avg_facenet:.4f} segundos")
+                print(f"  Éxitos: {len(facenet_success)} de {len(self.timing_results['facenet'])}")
+                print(f"  Total de embeddings generados: {len(self.embeddings_map['facenet'])}")
+            else:
+                print(f"\nFaceNet: No se generaron embeddings exitosos")
     
     def save_results(self):
         """Guardar resultados en archivos"""
@@ -176,16 +198,24 @@ class TestTimeDifferentModels:
                 f.write(f"  Total de operaciones: {len(self.timing_results['detection'])}\n\n")
             
             if self.timing_results['arcface']:
-                avg_arcface = sum(r['inference_time'] for r in self.timing_results['arcface']) / len(self.timing_results['arcface'])
-                f.write(f"ArcFace:\n")
-                f.write(f"  Tiempo promedio de inferencia: {avg_arcface:.4f} segundos\n")
-                f.write(f"  Total de operaciones: {len(self.timing_results['arcface'])}\n\n")
+                arcface_success = [r for r in self.timing_results['arcface'] if r['inference_time'] > 0 and r['inference_time'] < 1.0]
+                if arcface_success:
+                    avg_arcface = sum(r['inference_time'] for r in arcface_success) / len(arcface_success)
+                    f.write(f"ArcFace:\n")
+                    f.write(f"  Tiempo promedio de inferencia: {avg_arcface:.4f} segundos\n")
+                    f.write(f"  Éxitos: {len(arcface_success)} de {len(self.timing_results['arcface'])}\n\n")
+                else:
+                    f.write(f"ArcFace: No se generaron embeddings exitosos\n\n")
             
             if self.timing_results['facenet']:
-                avg_facenet = sum(r['time'] for r in self.timing_results['facenet']) / len(self.timing_results['facenet'])
-                f.write(f"FaceNet:\n")
-                f.write(f"  Tiempo promedio: {avg_facenet:.4f} segundos\n")
-                f.write(f"  Total de operaciones: {len(self.timing_results['facenet'])}\n\n")
+                facenet_success = [r for r in self.timing_results['facenet'] if r['time'] > 0]
+                if facenet_success:
+                    avg_facenet = sum(r['time'] for r in facenet_success) / len(facenet_success)
+                    f.write(f"FaceNet:\n")
+                    f.write(f"  Tiempo promedio: {avg_facenet:.4f} segundos\n")
+                    f.write(f"  Éxitos: {len(facenet_success)} de {len(self.timing_results['facenet'])}\n\n")
+                else:
+                    f.write(f"FaceNet: No se generaron embeddings exitosos\n\n")
             
             # Escribir cantidad de embeddings
             f.write("\nEmbeddings generados por modelo:\n")

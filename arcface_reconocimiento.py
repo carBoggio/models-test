@@ -10,8 +10,8 @@ class ArcFaceReconocimiento(Reconocimiento):
     def __init__(self):
         try:
             self.app = insightface.app.FaceAnalysis()
-            # No redimensionar, usar tamaño original
-            self.app.prepare(ctx_id=1, det_size=(640, 640))  # o det_size=None
+            # No usar det_size para máxima precisión
+            self.app.prepare(ctx_id=0)  # Sin det_size
             self.available = True
         except Exception as e:
             self.available = False
@@ -24,10 +24,33 @@ class ArcFaceReconocimiento(Reconocimiento):
         try:
             h, w = cara.shape[:2]
             
-            # Agregar padding alrededor de la cara
-            padding = 50  # Puedes ajustar este valor
-            cara_con_padding = np.zeros((h + 2*padding, w + 2*padding, 3), dtype=np.uint8)
-            cara_con_padding[padding:padding+h, padding:padding+w] = cara
+            # Asegurar dimensiones pares para evitar errores
+            if h % 2 != 0:
+                h += 1
+            if w % 2 != 0:
+                w += 1
+            
+            cara_even = cv2.resize(cara, (w, h))
+            
+            # Padding adaptativo
+            if h > 500 or w > 500:
+                padding = 120
+            elif h > 300 or w > 300:
+                padding = 80
+            else:
+                padding = 50
+                
+            # Crear imagen con padding (dimensiones pares)
+            final_h = h + 2*padding
+            final_w = w + 2*padding
+            
+            if final_h % 2 != 0:
+                final_h += 1
+            if final_w % 2 != 0:
+                final_w += 1
+                
+            cara_con_padding = np.zeros((final_h, final_w, 3), dtype=np.uint8)
+            cara_con_padding[padding:padding+h, padding:padding+w] = cara_even
             
             # Medir tiempo de detección
             start_time = time.time()

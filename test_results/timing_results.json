@@ -2,32 +2,32 @@
     "detection": [
         {
             "image": "foto1.png",
-            "time": 2.9955954551696777,
+            "time": 2.90502667427063,
             "faces_found": 1
         },
         {
             "image": "foto2.png",
-            "time": 0.6508176326751709,
+            "time": 0.6146533489227295,
             "faces_found": 1
         },
         {
             "image": "foto3.png",
-            "time": 0.5716700553894043,
+            "time": 0.5652852058410645,
             "faces_found": 2
         },
         {
-            "image": "foto4.png",
-            "time": 0.871941089630127,
+            "image": "foto4.jpg",
+            "time": 0.9996974468231201,
             "faces_found": 1
         },
         {
             "image": "foto5.png",
-            "time": 0.7684307098388672,
+            "time": 0.8111636638641357,
             "faces_found": 1
         },
         {
             "image": "foto6.png",
-            "time": 0.8341062068939209,
+            "time": 0.900301456451416,
             "faces_found": 1
         }
     ],
@@ -35,74 +35,74 @@
         {
             "image": "foto1.png",
             "face_id": 0,
-            "inference_time": 0.2963707447052002
+            "inference_time": 0.15145516395568848
         },
         {
             "image": "foto2.png",
             "face_id": 0,
-            "inference_time": 0.13471722602844238
+            "inference_time": 0.1794261932373047
         },
         {
             "image": "foto3.png",
             "face_id": 0,
-            "inference_time": 0.16209101676940918
+            "inference_time": 0.14196300506591797
         },
         {
             "image": "foto3.png",
             "face_id": 1,
-            "inference_time": 0.16147732734680176
+            "inference_time": 0.14229726791381836
         },
         {
-            "image": "foto4.png",
+            "image": "foto4.jpg",
             "face_id": 0,
-            "inference_time": 0.1207890510559082
+            "inference_time": 0.1378772258758545
         },
         {
             "image": "foto5.png",
             "face_id": 0,
-            "inference_time": 0.06785035133361816
+            "inference_time": 0.13922619819641113
         },
         {
             "image": "foto6.png",
             "face_id": 0,
-            "inference_time": 0.1456310749053955
+            "inference_time": 0.14599871635437012
         }
     ],
     "facenet": [
         {
             "image": "foto1.png",
             "face_id": 0,
-            "time": 0.0
+            "time": 0.05522489547729492
         },
         {
             "image": "foto2.png",
             "face_id": 0,
-            "time": 0.0
+            "time": 0.044998884201049805
         },
         {
             "image": "foto3.png",
             "face_id": 0,
-            "time": 0.0
+            "time": 0.05518817901611328
         },
         {
             "image": "foto3.png",
             "face_id": 1,
-            "time": 0.0
+            "time": 0.044896841049194336
         },
         {
-            "image": "foto4.png",
+            "image": "foto4.jpg",
             "face_id": 0,
-            "time": 0.0
+            "time": 0.04735684394836426
         },
         {
             "image": "foto5.png",
             "face_id": 0,
-            "time": 0.0
+            "time": 0.05250263214111328
         },
         {
             "image": "foto6.png",
             "face_id": 0,
-            "time": 0.0
+            "time": 0.04283905029296875
         }
     ]
 }
