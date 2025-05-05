@@ -2,32 +2,32 @@
     "detection": [
         {
             "image": "foto1.png",
-            "time": 3.5300488471984863,
+            "time": 2.9955954551696777,
             "faces_found": 1
         },
         {
             "image": "foto2.png",
-            "time": 0.644477128982544,
+            "time": 0.6508176326751709,
             "faces_found": 1
         },
         {
             "image": "foto3.png",
-            "time": 0.5635955333709717,
+            "time": 0.5716700553894043,
             "faces_found": 2
         },
         {
             "image": "foto4.png",
-            "time": 1.1042931079864502,
+            "time": 0.871941089630127,
             "faces_found": 1
         },
         {
             "image": "foto5.png",
-            "time": 0.9560360908508301,
+            "time": 0.7684307098388672,
             "faces_found": 1
         },
         {
             "image": "foto6.png",
-            "time": 0.9238100051879883,
+            "time": 0.8341062068939209,
             "faces_found": 1
         }
     ],
@@ -35,37 +35,37 @@
         {
             "image": "foto1.png",
             "face_id": 0,
-            "time": 1.1325323581695557
+            "inference_time": 0.2963707447052002
         },
         {
             "image": "foto2.png",
             "face_id": 0,
-            "time": 1.162041187286377
+            "inference_time": 0.13471722602844238
         },
         {
             "image": "foto3.png",
             "face_id": 0,
-            "time": 1.1173181533813477
+            "inference_time": 0.16209101676940918
         },
         {
             "image": "foto3.png",
             "face_id": 1,
-            "time": 1.1599886417388916
+            "inference_time": 0.16147732734680176
         },
         {
             "image": "foto4.png",
             "face_id": 0,
-            "time": 1.1650049686431885
+            "inference_time": 0.1207890510559082
         },
         {
             "image": "foto5.png",
             "face_id": 0,
-            "time": 1.1841106414794922
+            "inference_time": 0.06785035133361816
         },
         {
             "image": "foto6.png",
             "face_id": 0,
-            "time": 1.116201639175415
+            "inference_time": 0.1456310749053955
         }
     ],
     "facenet": [

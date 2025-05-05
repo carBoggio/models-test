@@ -60,15 +60,13 @@ class TestTimeDifferentModels:
             for i, face in enumerate(faces):
                 print(f"\n  --- Cara {i+1} ---")
                 
-                # Generar embedding con ArcFace
-                start_time = time.time()
-                arcface_embedding = self.arcface.generateFaceEmbedding(face)
-                arcface_time = time.time() - start_time
+                # Generar embedding con ArcFace (ahora devuelve tupla)
+                arcface_embedding, arcface_inference_time = self.arcface.generateFaceEmbedding(face)
                 
                 self.timing_results['arcface'].append({
                     'image': os.path.basename(image_path),
                     'face_id': i,
-                    'time': arcface_time
+                    'inference_time': arcface_inference_time
                 })
                 
                 # Generar embedding con FaceNet
@@ -137,9 +135,9 @@ class TestTimeDifferentModels:
         
         # Resumen de ArcFace
         if self.timing_results['arcface']:
-            avg_arcface = sum(r['time'] for r in self.timing_results['arcface']) / len(self.timing_results['arcface'])
+            avg_arcface = sum(r['inference_time'] for r in self.timing_results['arcface']) / len(self.timing_results['arcface'])
             print(f"\nArcFace:")
-            print(f"  Tiempo promedio por cara: {avg_arcface:.4f} segundos")
+            print(f"  Tiempo promedio de inferencia: {avg_arcface:.4f} segundos")
             print(f"  Total de embeddings generados: {len(self.embeddings_map['arcface'])}")
         
         # Resumen de FaceNet
@@ -171,12 +169,23 @@ class TestTimeDifferentModels:
             f.write("="*50 + "\n\n")
             
             # Escribir tiempos promedio
-            for model, results in self.timing_results.items():
-                if results:
-                    avg_time = sum(r['time'] for r in results) / len(results)
-                    f.write(f"{model.capitalize()}:\n")
-                    f.write(f"  Tiempo promedio: {avg_time:.4f} segundos\n")
-                    f.write(f"  Total de operaciones: {len(results)}\n\n")
+            if self.timing_results['detection']:
+                avg_detection = sum(r['time'] for r in self.timing_results['detection']) / len(self.timing_results['detection'])
+                f.write(f"Detection (RetinaFace):\n")
+                f.write(f"  Tiempo promedio: {avg_detection:.4f} segundos\n")
+                f.write(f"  Total de operaciones: {len(self.timing_results['detection'])}\n\n")
+            
+            if self.timing_results['arcface']:
+                avg_arcface = sum(r['inference_time'] for r in self.timing_results['arcface']) / len(self.timing_results['arcface'])
+                f.write(f"ArcFace:\n")
+                f.write(f"  Tiempo promedio de inferencia: {avg_arcface:.4f} segundos\n")
+                f.write(f"  Total de operaciones: {len(self.timing_results['arcface'])}\n\n")
+            
+            if self.timing_results['facenet']:
+                avg_facenet = sum(r['time'] for r in self.timing_results['facenet']) / len(self.timing_results['facenet'])
+                f.write(f"FaceNet:\n")
+                f.write(f"  Tiempo promedio: {avg_facenet:.4f} segundos\n")
+                f.write(f"  Total de operaciones: {len(self.timing_results['facenet'])}\n\n")
             
             # Escribir cantidad de embeddings
             f.write("\nEmbeddings generados por modelo:\n")
@@ -187,7 +196,11 @@ class TestTimeDifferentModels:
 if __name__ == "__main__":
     import sys
     
-    image_folder = "caras_buena_definicion_taylor"  # Carpeta por defecto
+    # Usar argumento de línea de comandos o carpeta por defecto
+    if len(sys.argv) > 1:
+        image_folder = sys.argv[1]
+    else:
+        image_folder = "caras_buena_definicion"  # Carpeta por defecto
     
     # Verificar si la carpeta existe
     if not os.path.exists(image_folder):

@@ -1,19 +1,19 @@
 RESUMEN DE TEST DE MODELOS
 ==================================================
 
-Detection:
-  Tiempo promedio: 1.2870 segundos
+Detection (RetinaFace):
+  Tiempo promedio: 1.1154 segundos
   Total de operaciones: 6
 
-Arcface:
-  Tiempo promedio: 1.1482 segundos
+ArcFace:
+  Tiempo promedio de inferencia: 0.1556 segundos
   Total de operaciones: 7
 
-Facenet:
+FaceNet:
   Tiempo promedio: 0.0000 segundos
   Total de operaciones: 7
 
 
 Embeddings generados por modelo:
-  arcface: 0 embeddings
+  arcface: 6 embeddings
   facenet: 0 embeddings

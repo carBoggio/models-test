@@ -1,15 +1,17 @@
 from reconocimiento import Reconocimiento
 import cv2
 import insightface
+import numpy as np
+import time
 
 class ArcFaceReconocimiento(Reconocimiento):
     """Implementación usando ArcFace con insightface"""
     
     def __init__(self):
         try:
-            # Inicializar el modelo ArcFace
             self.app = insightface.app.FaceAnalysis()
-            self.app.prepare(ctx_id=0, det_size=(640, 640))
+            # No redimensionar, usar tamaño original
+            self.app.prepare(ctx_id=1, det_size=(640, 640))  # o det_size=None
             self.available = True
         except Exception as e:
             self.available = False
@@ -17,51 +19,28 @@ class ArcFaceReconocimiento(Reconocimiento):
     
     def generateFaceEmbedding(self, cara):
         if not self.available:
-            return None
+            return None, 0.0
             
         try:
-            # Mostrar la cara antes de procesarla
-            print(f"Dimensiones de la cara: {cara.shape}")
-            print(f"Tipo de la cara: {type(cara)}")
+            h, w = cara.shape[:2]
             
-            # Mostrar la cara con OpenCV
-            cv2.imshow('Cara recibida', cara)
-            cv2.waitKey(1000)  # Espera 1 segundo
-            cv2.destroyAllWindows()
+            # Agregar padding alrededor de la cara
+            padding = 50  # Puedes ajustar este valor
+            cara_con_padding = np.zeros((h + 2*padding, w + 2*padding, 3), dtype=np.uint8)
+            cara_con_padding[padding:padding+h, padding:padding+w] = cara
             
-            # Guardar la cara en un archivo para inspección
-            cv2.imwrite('debug_cara.jpg', cara)
-            print("Cara guardada en debug_cara.jpg")
+            # Medir tiempo de detección
+            start_time = time.time()
+            faces = self.app.get(cara_con_padding)
+            detection_time = time.time() - start_time
             
-            # Comprobar que la imagen sea válida
-            if cara.size == 0:
-                print("La imagen de la cara está vacía!")
-                return None
-            
-            # Redimensionar si es necesario (ArcFace espera 112x112)
-            if cara.shape[0] != 112 or cara.shape[1] != 112:
-                cara_resized = cv2.resize(cara, (112, 112))
-                print(f"Cara redimensionada a: {cara_resized.shape}")
-            else:
-                cara_resized = cara
-            
-            # Obtener el embedding directamente
-            faces = self.app.get(cara_resized)
-            
-            if len(faces) > 0:
-                # Retorna el embedding de la primera cara detectada
+            if faces and len(faces) > 0:
                 embedding = faces[0].embedding
-                print(f"Embedding generado con éxito, dimensiones: {embedding.shape}")
-                return embedding
+                return embedding, detection_time
             else:
-                print("No se detectó ninguna cara en la imagen")
-                print("Valor mínimo en imagen:", cara.min())
-                print("Valor máximo en imagen:", cara.max())
-                print("Tamaño de la imagen:", cara.size)
-                return None
+                print(f"No se detectó cara en imagen {h}x{w} con padding {padding}px")
+                return None, detection_time
                 
         except Exception as e:
             print(f"Error en generación de embedding ArcFace: {e}")
-            import traceback
-            traceback.print_exc()
-            return None
+            return None, 0.0
