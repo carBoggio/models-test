@@ -1,0 +1,20 @@
+{
+    "arcface": {
+        "total_faces": 3,
+        "correct_predictions": 1,
+        "accuracy": 0.3333333333333333,
+        "average_confidence": 0.5466666666666666
+    },
+    "facenet": {
+        "total_faces": 3,
+        "correct_predictions": 2,
+        "accuracy": 0.6666666666666666,
+        "average_confidence": 0.5299999999999999
+    },
+    "deepface": {
+        "total_faces": 3,
+        "correct_predictions": 2,
+        "accuracy": 0.6666666666666666,
+        "average_confidence": 0.5066666666666667
+    }
+}

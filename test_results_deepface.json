@@ -1,0 +1,47 @@
+[
+    {
+        "image": "foto_test_marilyn.png",
+        "faces": [
+            {
+                "face_id": 0,
+                "predictions": {
+                    "taylor": 0.48,
+                    "marilyn": 0.32,
+                    "francella": 0.2
+                },
+                "inference_time": 0.12449169158935547
+            }
+        ],
+        "model": "deepface"
+    },
+    {
+        "image": "francella_test.png",
+        "faces": [
+            {
+                "face_id": 0,
+                "predictions": {
+                    "francella": 0.4,
+                    "taylor": 0.35,
+                    "marilyn": 0.25
+                },
+                "inference_time": 0.1237325668334961
+            }
+        ],
+        "model": "deepface"
+    },
+    {
+        "image": "taylor_test.png",
+        "faces": [
+            {
+                "face_id": 0,
+                "predictions": {
+                    "taylor": 0.64,
+                    "marilyn": 0.24,
+                    "francella": 0.12
+                },
+                "inference_time": 0.11822080612182617
+            }
+        ],
+        "model": "deepface"
+    }
+]

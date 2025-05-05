@@ -4,89 +4,73 @@ import cv2
 from random_forest import RandomForest
 from modelos.retinaface_detection import RetinaFaceDetection
 from modelos.arcface_reconocimiento import ArcFaceReconocimiento
+from modelos.facenet_reconocimiento import FaceNetReconocimiento
+from modelos.deepface_reconocimiento import DeepFaceReconocimiento
 from modelos.setup import Setup
 
-class TrainAndTest:
-    def __init__(self, embeddings_file="embeddings_arcface.json", model_name="arcface"):
-        """
-        Inicializa el sistema de entrenamiento y prueba
+class MultiModelTrainAndTest:
+    def __init__(self):
+        """Inicializa el sistema con múltiples modelos"""
+        # Modelos disponibles
+        self.models = {
+            "arcface": ArcFaceReconocimiento(),
+            "facenet": FaceNetReconocimiento(),
+            "deepface": DeepFaceReconocimiento()
+        }
         
-        Args:
-            embeddings_file: Archivo JSON con embeddings de entrenamiento
-            model_name: Modelo usado para generar embeddings
-        """
-        self.embeddings_file = embeddings_file
-        self.model_name = model_name
-        
-        # Inicializar detector y modelo de reconocimiento
+        # Detector común
         self.detector = RetinaFaceDetection()
         
-        if model_name == "arcface":
-            self.recognition_model = ArcFaceReconocimiento()
+        # Diccionario para almacenar modelos Random Forest
+        self.rf_models = {}
+        
+    def train_model(self, model_name):
+        """Entrena un modelo específico"""
+        embeddings_file = f"modelos/embeddings_map_generated_{model_name}.json"
+        
+        # Cargar o generar embeddings
+        if os.path.exists(embeddings_file):
+            print(f"Cargando embeddings de {model_name}...")
+            with open(embeddings_file, 'r') as f:
+                training_embeddings = json.load(f)
         else:
-            raise ValueError(f"Modelo {model_name} no implementado en este ejemplo")
-        
-        # Cargar embeddings de entrenamiento
-        self.load_training_data()
-        
-        # Entrenar Random Forest
-        self.train_random_forest()
-    
-    def load_training_data(self):
-        """Carga los embeddings desde el JSON"""
-        try:
-            with open(self.embeddings_file, 'r') as f:
-                self.training_embeddings = json.load(f)
-            print(f"Embeddings de entrenamiento cargados desde '{self.embeddings_file}'")
-            print(f"Personas encontradas: {list(self.training_embeddings.keys())}")
-        except FileNotFoundError:
-            print(f"Error: Archivo '{self.embeddings_file}' no encontrado")
-            # Generar embeddings si no existen
-            self.generate_training_embeddings()
-    
-    def generate_training_embeddings(self):
-        """Genera embeddings de entrenamiento si no existen"""
-        print("Generando embeddings de entrenamiento...")
-        setup = Setup(
-            main_folder="caras_buena_definicion",
-            model_name=self.model_name,
-            output_file=self.embeddings_file
-        )
-        self.training_embeddings = setup.generateMapWithEmbeddings()
-    
-    def train_random_forest(self):
-        """Entrena el modelo Random Forest con los embeddings"""
-        print("\n=== Entrenando Random Forest ===")
-        
-        # Preparar datos para Random Forest
+            print(f"Generando embeddings para {model_name}...")
+           
+            setup = Setup(
+                main_folder="caras_buena_definicion",
+                model_name=model_name
+            )
+            training_embeddings = setup.generateMapWithEmbeddings()
+            
+            # Renombrar el archivo generado
+            default_file = "embeddings_map.json"
+            if os.path.exists(default_file):
+                os.rename(default_file, embeddings_file)        # Preparar datos para Random Forest
         embeddings_for_rf = {}
-        
-        for person, images_embeddings in self.training_embeddings.items():
-            # Aplanar las listas de listas
+        for person, images_embeddings in training_embeddings.items():
             person_embeddings = []
             for image_embeddings in images_embeddings:
                 person_embeddings.extend(image_embeddings)
             embeddings_for_rf[person] = person_embeddings
         
-        # Crear y entrenar Random Forest
-        self.rf_model = RandomForest(embeddings_for_rf)
-        print("Random Forest entrenado exitosamente")
+        # Entrenar Random Forest
+        self.rf_models[model_name] = RandomForest(embeddings_for_rf)
+        print(f"Random Forest entrenado para {model_name}")
+    
+    def train_all_models(self):
+        """Entrena todos los modelos"""
+        for model_name in self.models.keys():
+            print(f"\n=== Entrenando {model_name.upper()} ===")
+            self.train_model(model_name)
     
     def process_test_images(self, test_folder="caras_test"):
-        """
-        Procesa imágenes de test y calcula confianza
-        
-        Args:
-            test_folder: Carpeta con imágenes de test
-        """
-        # Obtener ruta absoluta de la carpeta de test
+        """Procesa imágenes de test con todos los modelos"""
+        # Buscar carpeta de test
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        
-        # Buscar la carpeta de test en diferentes ubicaciones
         possible_paths = [
-            test_folder,  # Ruta absoluta o en el directorio actual
-            os.path.join(current_dir, test_folder),  # En el directorio actual
-            os.path.join(os.path.dirname(current_dir), test_folder),  # En el directorio padre
+            test_folder,
+            os.path.join(current_dir, test_folder),
+            os.path.join(os.path.dirname(current_dir), test_folder),
         ]
         
         test_folder_path = None
@@ -96,12 +80,8 @@ class TrainAndTest:
                 break
         
         if test_folder_path is None:
-            print(f"Error: No se encontró la carpeta de test en ninguna de estas ubicaciones:")
-            for path in possible_paths:
-                print(f"  - {path}")
+            print(f"Error: No se encontró la carpeta de test")
             return
-        
-        print(f"\n=== Procesando imágenes de test en '{test_folder_path}' ===")
         
         # Obtener todas las imágenes de test
         test_images = []
@@ -109,11 +89,24 @@ class TrainAndTest:
             test_images.extend([f for f in os.listdir(test_folder_path) 
                               if f.lower().endswith(ext)])
         
-        print(f"Encontradas {len(test_images)} imágenes de test")
-        
+        # Procesar con cada modelo
+        for model_name in self.models.keys():
+            print(f"\n=== Procesando con {model_name.upper()} ===")
+            results = self.process_with_model(model_name, test_images, test_folder_path)
+            
+            # Guardar resultados en JSON separado
+            output_file = f"test_results_{model_name}.json"
+            with open(output_file, 'w') as f:
+                json.dump(results, f, indent=4)
+            print(f"Resultados guardados en '{output_file}'")
+            
+            # Mostrar resumen
+            self.print_summary(results, model_name)
+    
+    def process_with_model(self, model_name, test_images, test_folder_path):
+        """Procesa imágenes con un modelo específico"""
         results = []
         
-        # Procesar cada imagen
         for img_file in test_images:
             img_path = os.path.join(test_folder_path, img_file)
             print(f"\n--- Procesando: {img_file} ---")
@@ -126,7 +119,8 @@ class TrainAndTest:
                 results.append({
                     'image': img_file,
                     'faces': [],
-                    'status': 'no_faces_detected'
+                    'status': 'no_faces_detected',
+                    'model': model_name
                 })
                 continue
             
@@ -134,15 +128,22 @@ class TrainAndTest:
             
             image_results = {
                 'image': img_file,
-                'faces': []
+                'faces': [],
+                'model': model_name
             }
             
             # Procesar cada cara
             for i, face in enumerate(faces):
                 print(f"  Cara {i+1}:")
                 
-                # Generar embedding
-                embedding, inference_time = self.recognition_model.generateFaceEmbedding(face)
+                # Generar embedding según el modelo
+                model = self.models[model_name]
+                
+                if model_name in ["arcface", "deepface"]:
+                    embedding, inference_time = model.generateFaceEmbedding(face)
+                else:  # facenet
+                    embedding = model.generateFaceEmbedding(face)
+                    inference_time = 0.0
                 
                 if embedding is None:
                     print("    Error al generar embedding")
@@ -152,14 +153,15 @@ class TrainAndTest:
                     })
                     continue
                 
-                # Convertir a lista si es numpy array
+                # Convertir a lista
                 if hasattr(embedding, 'tolist'):
                     embedding = embedding.tolist()
                 else:
                     embedding = list(embedding)
                 
                 # Predecir con Random Forest
-                predictions = self.rf_model.detect(embedding)
+                rf_model = self.rf_models[model_name]
+                predictions = rf_model.detect(embedding)
                 
                 # Mostrar resultados
                 print("    Predicciones:")
@@ -175,27 +177,11 @@ class TrainAndTest:
             
             results.append(image_results)
         
-        # Guardar resultados en JSON
-        self.save_test_results(results)
-        
-        # Mostrar resumen
-        self.print_summary(results)
-        
         return results
     
-    def save_test_results(self, results):
-        """Guarda los resultados de test en JSON"""
-        output_file = "test_results.json"
-        try:
-            with open(output_file, 'w') as f:
-                json.dump(results, f, indent=4)
-            print(f"\nResultados guardados en '{output_file}'")
-        except Exception as e:
-            print(f"Error al guardar resultados: {e}")
-    
-    def print_summary(self, results):
-        """Imprime un resumen de los resultados"""
-        print("\n=== RESUMEN DE RESULTADOS ===")
+    def print_summary(self, results, model_name):
+        """Imprime un resumen de resultados para un modelo"""
+        print(f"\n=== RESUMEN DE RESULTADOS - {model_name.upper()} ===")
         
         total_images = len(results)
         total_faces = sum(len(r['faces']) for r in results if 'faces' in r)
@@ -210,7 +196,6 @@ class TrainAndTest:
         for result in results:
             for face in result.get('faces', []):
                 if 'predictions' in face:
-                    # Contar la persona con mayor confianza
                     best_person = max(face['predictions'].items(), key=lambda x: x[1])
                     person, confidence = best_person
                     
@@ -223,14 +208,64 @@ class TrainAndTest:
         for person, count in person_counts.items():
             high_conf = high_confidence_counts.get(person, 0)
             print(f"  {person}: {count} predicciones ({high_conf} con confianza > 0.5)")
+    
+    def compare_models_performance(self):
+        """Compara el rendimiento de todos los modelos"""
+        comparison = {}
+        
+        # Leer resultados de cada modelo
+        for model_name in self.models.keys():
+            results_file = f"test_results_{model_name}.json"
+            if os.path.exists(results_file):
+                with open(results_file, 'r') as f:
+                    results = json.load(f)
+                    
+                # Calcular métricas
+                total_faces = sum(len(r['faces']) for r in results if 'faces' in r)
+                correct_predictions = 0
+                confidence_sum = 0
+                
+                for result in results:
+                    for face in result.get('faces', []):
+                        if 'predictions' in face:
+                            # Asumiendo que el nombre de la imagen indica la persona correcta
+                            image_name = result['image'].split('_')[0]
+                            best_person = max(face['predictions'].items(), key=lambda x: x[1])
+                            person, confidence = best_person
+                            
+                            if person.lower() == image_name.lower():
+                                correct_predictions += 1
+                            confidence_sum += confidence
+                
+                comparison[model_name] = {
+                    'total_faces': total_faces,
+                    'correct_predictions': correct_predictions,
+                    'accuracy': correct_predictions / total_faces if total_faces > 0 else 0,
+                    'average_confidence': confidence_sum / total_faces if total_faces > 0 else 0
+                }
+        
+        # Guardar comparación
+        with open('models_comparison.json', 'w') as f:
+            json.dump(comparison, f, indent=4)
+        
+        print("\n=== COMPARACIÓN DE MODELOS ===")
+        for model, metrics in comparison.items():
+            print(f"\n{model.upper()}:")
+            print(f"  Total de caras: {metrics['total_faces']}")
+            print(f"  Predicciones correctas: {metrics['correct_predictions']}")
+            print(f"  Precisión: {metrics['accuracy']:.2%}")
+            print(f"  Confianza promedio: {metrics['average_confidence']:.3f}")
 
 # Ejemplo de uso
 if __name__ == "__main__":
-    # Crear instancia con parámetros fijos
-    trainer = TrainAndTest(
-        embeddings_file="modelos/embeddings_map_generated.json",
-        model_name="arcface"
-    )
+    # Crear sistema multi-modelo
+    multi_trainer = MultiModelTrainAndTest()
+    
+    # Entrenar todos los modelos
+    multi_trainer.train_all_models()
     
     # Procesar imágenes de test
-    results = trainer.process_test_images(test_folder="caras_test")
+    multi_trainer.process_test_images(test_folder="caras_test")
+    
+    # Comparar rendimiento
+    multi_trainer.compare_models_performance()
