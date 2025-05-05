@@ -1,0 +1,108 @@
+{
+    "detection": [
+        {
+            "image": "foto1.png",
+            "time": 3.5300488471984863,
+            "faces_found": 1
+        },
+        {
+            "image": "foto2.png",
+            "time": 0.644477128982544,
+            "faces_found": 1
+        },
+        {
+            "image": "foto3.png",
+            "time": 0.5635955333709717,
+            "faces_found": 2
+        },
+        {
+            "image": "foto4.png",
+            "time": 1.1042931079864502,
+            "faces_found": 1
+        },
+        {
+            "image": "foto5.png",
+            "time": 0.9560360908508301,
+            "faces_found": 1
+        },
+        {
+            "image": "foto6.png",
+            "time": 0.9238100051879883,
+            "faces_found": 1
+        }
+    ],
+    "arcface": [
+        {
+            "image": "foto1.png",
+            "face_id": 0,
+            "time": 1.1325323581695557
+        },
+        {
+            "image": "foto2.png",
+            "face_id": 0,
+            "time": 1.162041187286377
+        },
+        {
+            "image": "foto3.png",
+            "face_id": 0,
+            "time": 1.1173181533813477
+        },
+        {
+            "image": "foto3.png",
+            "face_id": 1,
+            "time": 1.1599886417388916
+        },
+        {
+            "image": "foto4.png",
+            "face_id": 0,
+            "time": 1.1650049686431885
+        },
+        {
+            "image": "foto5.png",
+            "face_id": 0,
+            "time": 1.1841106414794922
+        },
+        {
+            "image": "foto6.png",
+            "face_id": 0,
+            "time": 1.116201639175415
+        }
+    ],
+    "facenet": [
+        {
+            "image": "foto1.png",
+            "face_id": 0,
+            "time": 0.0
+        },
+        {
+            "image": "foto2.png",
+            "face_id": 0,
+            "time": 0.0
+        },
+        {
+            "image": "foto3.png",
+            "face_id": 0,
+            "time": 0.0
+        },
+        {
+            "image": "foto3.png",
+            "face_id": 1,
+            "time": 0.0
+        },
+        {
+            "image": "foto4.png",
+            "face_id": 0,
+            "time": 0.0
+        },
+        {
+            "image": "foto5.png",
+            "face_id": 0,
+            "time": 0.0
+        },
+        {
+            "image": "foto6.png",
+            "face_id": 0,
+            "time": 0.0
+        }
+    ]
+}

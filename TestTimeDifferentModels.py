@@ -183,24 +183,21 @@ class TestTimeDifferentModels:
             for model, embeddings in self.embeddings_map.items():
                 f.write(f"  {model}: {len(embeddings)} embeddings\n")
 
-# Función main para ejecutar el test
-def main():
-    # Especifica aquí la ruta a tu carpeta de imágenes
-    image_folder = "caras_buena_definicion_taylor"  # Cambia esto por tu ruta
-    
-    # Crear el tester
-    tester = TestTimeDifferentModels(image_folder)
-    
-    # Ejecutar los tests
-    tester.run_tests()
-
+# Ejecución del script
 if __name__ == "__main__":
-    # También puedes especificar la carpeta como argumento de línea de comandos
     import sys
-    if len(sys.argv) > 1:
-        image_folder = sys.argv[1]
-    else:
-        image_folder = "images"  # Carpeta por defecto
     
+    image_folder = "caras_buena_definicion_taylor"  # Carpeta por defecto
+    
+    # Verificar si la carpeta existe
+    if not os.path.exists(image_folder):
+        print(f"Error: La carpeta '{image_folder}' no existe.")
+        print("Carpetas disponibles en el directorio actual:")
+        for item in os.listdir('.'):
+            if os.path.isdir(item):
+                print(f"  - {item}")
+        sys.exit(1)
+    
+    # Crear y ejecutar el tester
     tester = TestTimeDifferentModels(image_folder)
     tester.run_tests()

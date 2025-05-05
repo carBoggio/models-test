@@ -1,0 +1,19 @@
+RESUMEN DE TEST DE MODELOS
+==================================================
+
+Detection:
+  Tiempo promedio: 1.2870 segundos
+  Total de operaciones: 6
+
+Arcface:
+  Tiempo promedio: 1.1482 segundos
+  Total de operaciones: 7
+
+Facenet:
+  Tiempo promedio: 0.0000 segundos
+  Total de operaciones: 7
+
+
+Embeddings generados por modelo:
+  arcface: 0 embeddings
+  facenet: 0 embeddings
