@@ -1,4 +1,4 @@
-from detection import Detection
+from modelos.detection import Detection
 import cv2
 try:
     from retinaface import RetinaFace

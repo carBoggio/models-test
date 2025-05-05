@@ -1,0 +1,44 @@
+[
+    {
+        "image": "foto_test_marilyn.png",
+        "faces": [
+            {
+                "face_id": 0,
+                "predictions": {
+                    "taylor": 0.48,
+                    "marilyn": 0.3,
+                    "francella": 0.22
+                },
+                "inference_time": 0.1367497444152832
+            }
+        ]
+    },
+    {
+        "image": "francella_test.png",
+        "faces": [
+            {
+                "face_id": 0,
+                "predictions": {
+                    "taylor": 0.41,
+                    "francella": 0.34,
+                    "marilyn": 0.25
+                },
+                "inference_time": 0.14178156852722168
+            }
+        ]
+    },
+    {
+        "image": "taylor_test.png",
+        "faces": [
+            {
+                "face_id": 0,
+                "predictions": {
+                    "taylor": 0.75,
+                    "francella": 0.15,
+                    "marilyn": 0.1
+                },
+                "inference_time": 0.13971614837646484
+            }
+        ]
+    }
+]

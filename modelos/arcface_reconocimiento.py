@@ -1,4 +1,4 @@
-from reconocimiento import Reconocimiento
+from modelos.reconocimiento import Reconocimiento
 import cv2
 import insightface
 import numpy as np
