@@ -1,0 +1,320 @@
+{
+  "deepface": {
+    "predicciones": [
+      "desconocido",
+      "desconocido",
+      "desconocido"
+    ],
+    "verdaderos": [
+      "francella",
+      "marilyn",
+      "taylor"
+    ],
+    "distancias": [
+      1.1857426702859808,
+      1.0796531032349839,
+      0.6941099151689615
+    ],
+    "aciertos_por_persona": {
+      "francella": 0,
+      "marilyn": 0,
+      "taylor": 0
+    },
+    "total_por_persona": {
+      "francella": 1,
+      "marilyn": 1,
+      "taylor": 1
+    },
+    "matriz_confusion": {
+      "matriz": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ],
+      "etiquetas": [
+        "desconocido",
+        "francella",
+        "marilyn",
+        "taylor"
+      ]
+    },
+    "precision_global": 0.0,
+    "precision_por_persona": {
+      "francella": 0.0,
+      "marilyn": 0.0,
+      "taylor": 0.0
+    },
+    "reporte_clasificacion": {
+      "desconocido": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "francella": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "marilyn": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "taylor": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "accuracy": 0.0,
+      "macro avg": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "weighted avg": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      }
+    }
+  },
+  "facenet": {
+    "predicciones": [
+      "desconocido",
+      "desconocido",
+      "desconocido"
+    ],
+    "verdaderos": [
+      "francella",
+      "marilyn",
+      "taylor"
+    ],
+    "distancias": [
+      0.9655771447928317,
+      0.9658069268207333,
+      1.1078150487779412
+    ],
+    "aciertos_por_persona": {
+      "francella": 0,
+      "marilyn": 0,
+      "taylor": 0
+    },
+    "total_por_persona": {
+      "francella": 1,
+      "marilyn": 1,
+      "taylor": 1
+    },
+    "matriz_confusion": {
+      "matriz": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ],
+      "etiquetas": [
+        "desconocido",
+        "francella",
+        "marilyn",
+        "taylor"
+      ]
+    },
+    "precision_global": 0.0,
+    "precision_por_persona": {
+      "francella": 0.0,
+      "marilyn": 0.0,
+      "taylor": 0.0
+    },
+    "reporte_clasificacion": {
+      "desconocido": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "francella": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "marilyn": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "taylor": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "accuracy": 0.0,
+      "macro avg": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "weighted avg": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      }
+    }
+  },
+  "arcface": {
+    "predicciones": [
+      "desconocido",
+      "desconocido",
+      "desconocido"
+    ],
+    "verdaderos": [
+      "francella",
+      "marilyn",
+      "taylor"
+    ],
+    "distancias": [
+      23.226132023972443,
+      24.31912058418227,
+      18.969372160780885
+    ],
+    "aciertos_por_persona": {
+      "francella": 0,
+      "marilyn": 0,
+      "taylor": 0
+    },
+    "total_por_persona": {
+      "francella": 1,
+      "marilyn": 1,
+      "taylor": 1
+    },
+    "matriz_confusion": {
+      "matriz": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ],
+      "etiquetas": [
+        "desconocido",
+        "francella",
+        "marilyn",
+        "taylor"
+      ]
+    },
+    "precision_global": 0.0,
+    "precision_por_persona": {
+      "francella": 0.0,
+      "marilyn": 0.0,
+      "taylor": 0.0
+    },
+    "reporte_clasificacion": {
+      "desconocido": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "francella": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "marilyn": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "taylor": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "accuracy": 0.0,
+      "macro avg": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "weighted avg": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+    "detection": [
+        {
+            "image": "francella_test.png",
+            "time": 4.754296541213989,
+            "faces_found": 1
+        },
+        {
+            "image": "foto_test_marilyn.png",
+            "time": 1.1907618045806885,
+            "faces_found": 1
+        },
+        {
+            "image": "taylor_test.png",
+            "time": 0.862602710723877,
+            "faces_found": 1
+        }
+    ],
+    "arcface": [
+        {
+            "image": "francella_test.png",
+            "face_id": 0,
+            "inference_time": 0.3080275058746338
+        },
+        {
+            "image": "foto_test_marilyn.png",
+            "face_id": 0,
+            "inference_time": 0.28964996337890625
+        },
+        {
+            "image": "taylor_test.png",
+            "face_id": 0,
+            "inference_time": 0.2552626132965088
+        }
+    ],
+    "facenet": [
+        {
+            "image": "francella_test.png",
+            "face_id": 0,
+            "time": 0.0820016860961914
+        },
+        {
+            "image": "foto_test_marilyn.png",
+            "face_id": 0,
+            "time": 0.0729975700378418
+        },
+        {
+            "image": "taylor_test.png",
+            "face_id": 0,
+            "time": 0.06874346733093262
+        }
+    ],
+    "deepface": [
+        {
+            "image": "francella_test.png",
+            "face_id": 0,
+            "inference_time": 3.749037504196167
+        },
+        {
+            "image": "foto_test_marilyn.png",
+            "face_id": 0,
+            "inference_time": 0.15999937057495117
+        },
+        {
+            "image": "taylor_test.png",
+            "face_id": 0,
+            "inference_time": 0.15299701690673828
+        }
+    ]
+}

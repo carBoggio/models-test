@@ -1,0 +1,26 @@
+{
+  "precision_global": {
+    "deepface": 0.0,
+    "facenet": 0.0,
+    "arcface": 0.0
+  },
+  "precision_por_persona": {
+    "francella": {
+      "deepface": 0.0,
+      "facenet": 0.0,
+      "arcface": 0.0
+    },
+    "marilyn": {
+      "deepface": 0.0,
+      "facenet": 0.0,
+      "arcface": 0.0
+    },
+    "taylor": {
+      "deepface": 0.0,
+      "facenet": 0.0,
+      "arcface": 0.0
+    }
+  },
+  "mejor_modelo": null,
+  "mejor_precision": 0
+}
